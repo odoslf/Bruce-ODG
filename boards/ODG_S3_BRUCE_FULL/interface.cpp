@@ -1,7 +1,9 @@
 #include "core/powerSave.h"
 #include "core/utils.h"
+#include "core/configPins.h"
 #include <Arduino.h>
 #include <Wire.h>
+#include <globals.h>
 #include <interface.h>
 #include "CYD28_TouchscreenR.h"
 
@@ -14,53 +16,53 @@ CYD28_TouchR touch(CYD28_DISPLAY_HOR_RES_MAX, CYD28_DISPLAY_VER_RES_MAX);
 
 static void odgLockHardwareDefaults() {
 #if defined(SDCARD_SCK)
-bruceConfigPins.SDCARD_bus.sck = (gpio_num_t)SDCARD_SCK;
-bruceConfigPins.SDCARD_bus.miso = (gpio_num_t)SDCARD_MISO;
-bruceConfigPins.SDCARD_bus.mosi = (gpio_num_t)SDCARD_MOSI;
-bruceConfigPins.SDCARD_bus.cs = (gpio_num_t)SDCARD_CS;
+    bruceConfigPins.SDCARD_bus.sck = (gpio_num_t)SDCARD_SCK;
+    bruceConfigPins.SDCARD_bus.miso = (gpio_num_t)SDCARD_MISO;
+    bruceConfigPins.SDCARD_bus.mosi = (gpio_num_t)SDCARD_MOSI;
+    bruceConfigPins.SDCARD_bus.cs = (gpio_num_t)SDCARD_CS;
 #endif
 
 #if defined(USE_CC1101_VIA_SPI)
-bruceConfigPins.rfModule = CC1101_SPI_MODULE;
-bruceConfigPins.rfFreq = 433.92f;
-bruceConfigPins.CC1101_bus.sck = (gpio_num_t)CC1101_SCK_PIN;
-bruceConfigPins.CC1101_bus.miso = (gpio_num_t)CC1101_MISO_PIN;
-bruceConfigPins.CC1101_bus.mosi = (gpio_num_t)CC1101_MOSI_PIN;
-bruceConfigPins.CC1101_bus.cs = (gpio_num_t)CC1101_SS_PIN;
-bruceConfigPins.CC1101_bus.io0 = (gpio_num_t)CC1101_GDO0_PIN;
-bruceConfigPins.CC1101_bus.io2 = (gpio_num_t)CC1101_GDO2_PIN;
+    bruceConfigPins.rfModule = CC1101_SPI_MODULE;
+    bruceConfigPins.rfFreq = 433.92f;
+    bruceConfigPins.CC1101_bus.sck = (gpio_num_t)CC1101_SCK_PIN;
+    bruceConfigPins.CC1101_bus.miso = (gpio_num_t)CC1101_MISO_PIN;
+    bruceConfigPins.CC1101_bus.mosi = (gpio_num_t)CC1101_MOSI_PIN;
+    bruceConfigPins.CC1101_bus.cs = (gpio_num_t)CC1101_SS_PIN;
+    bruceConfigPins.CC1101_bus.io0 = (gpio_num_t)CC1101_GDO0_PIN;
+    bruceConfigPins.CC1101_bus.io2 = GPIO_NUM_NC;
 #endif
 
 #if defined(USE_NRF24_VIA_SPI)
-bruceConfigPins.NRF24_bus.sck = (gpio_num_t)NRF24_SCK_PIN;
-bruceConfigPins.NRF24_bus.miso = (gpio_num_t)NRF24_MISO_PIN;
-bruceConfigPins.NRF24_bus.mosi = (gpio_num_t)NRF24_MOSI_PIN;
-bruceConfigPins.NRF24_bus.cs = (gpio_num_t)NRF24_SS_PIN;
-bruceConfigPins.NRF24_bus.io0 = (gpio_num_t)NRF24_CE_PIN;
-bruceConfigPins.NRF24_bus.io2 = GPIO_NUM_NC;
+    bruceConfigPins.NRF24_bus.sck = (gpio_num_t)NRF24_SCK_PIN;
+    bruceConfigPins.NRF24_bus.miso = (gpio_num_t)NRF24_MISO_PIN;
+    bruceConfigPins.NRF24_bus.mosi = (gpio_num_t)NRF24_MOSI_PIN;
+    bruceConfigPins.NRF24_bus.cs = (gpio_num_t)NRF24_SS_PIN;
+    bruceConfigPins.NRF24_bus.io0 = (gpio_num_t)NRF24_CE_PIN;
+    bruceConfigPins.NRF24_bus.io2 = GPIO_NUM_NC;
 #endif
 
 #if !defined(LITE_VERSION) && defined(LORA_SCK)
-bruceConfigPins.LoRa_bus.sck = (gpio_num_t)LORA_SCK;
-bruceConfigPins.LoRa_bus.miso = (gpio_num_t)LORA_MISO;
-bruceConfigPins.LoRa_bus.mosi = (gpio_num_t)LORA_MOSI;
-bruceConfigPins.LoRa_bus.cs = (gpio_num_t)LORA_CS;
-bruceConfigPins.LoRa_bus.io0 = (gpio_num_t)LORA_RST;
-bruceConfigPins.LoRa_bus.io2 = (gpio_num_t)LORA_DIO0;
+    bruceConfigPins.LoRa_bus.sck = (gpio_num_t)LORA_SCK;
+    bruceConfigPins.LoRa_bus.miso = (gpio_num_t)LORA_MISO;
+    bruceConfigPins.LoRa_bus.mosi = (gpio_num_t)LORA_MOSI;
+    bruceConfigPins.LoRa_bus.cs = (gpio_num_t)LORA_CS;
+    bruceConfigPins.LoRa_bus.io0 = (gpio_num_t)LORA_RST;
+    bruceConfigPins.LoRa_bus.io2 = (gpio_num_t)LORA_DIO0;
 #endif
 
 #if defined(GROVE_SDA) && defined(GROVE_SCL)
-bruceConfigPins.i2c_bus.sda = (gpio_num_t)GROVE_SDA;
-bruceConfigPins.i2c_bus.scl = (gpio_num_t)GROVE_SCL;
-bruceConfigPins.rfidModule = PN532_I2C_MODULE;
+    bruceConfigPins.i2c_bus.sda = (gpio_num_t)GROVE_SDA;
+    bruceConfigPins.i2c_bus.scl = (gpio_num_t)GROVE_SCL;
+    bruceConfigPins.rfidModule = PN532_I2C_MODULE;
 #endif
 
 #if defined(IR_TX_PINS)
-bruceConfigPins.irTx = 4;
+    bruceConfigPins.irTx = 4;
 #endif
 
 #if defined(IR_RX_PINS)
-bruceConfigPins.irRx = 5;
+    bruceConfigPins.irRx = 5;
 #endif
 }
 
@@ -136,51 +138,51 @@ void _setup_gpio() {
 }
 
 void _post_setup_gpio() {
-odgLockHardwareDefaults();
+    odgLockHardwareDefaults();
 
 #if defined(SDCARD_CS) && (SDCARD_CS >= 0)
-pinMode(SDCARD_CS, OUTPUT);
-digitalWrite(SDCARD_CS, HIGH);
+    pinMode(SDCARD_CS, OUTPUT);
+    digitalWrite(SDCARD_CS, HIGH);
 #endif
 
 #if defined(USE_CC1101_VIA_SPI)
-pinMode(CC1101_SS_PIN, OUTPUT);
-digitalWrite(CC1101_SS_PIN, HIGH);
-pinMode(CC1101_GDO0_PIN, INPUT);
+    pinMode(CC1101_SS_PIN, OUTPUT);
+    digitalWrite(CC1101_SS_PIN, HIGH);
+    pinMode(CC1101_GDO0_PIN, INPUT);
 #endif
 
 #if defined(USE_NRF24_VIA_SPI)
-pinMode(NRF24_SS_PIN, OUTPUT);
-digitalWrite(NRF24_SS_PIN, HIGH);
-pinMode(NRF24_CE_PIN, OUTPUT);
-digitalWrite(NRF24_CE_PIN, LOW);
+    pinMode(NRF24_SS_PIN, OUTPUT);
+    digitalWrite(NRF24_SS_PIN, HIGH);
+    pinMode(NRF24_CE_PIN, OUTPUT);
+    digitalWrite(NRF24_CE_PIN, LOW);
 #endif
 
 #if defined(LORA_CS)
-pinMode(LORA_CS, OUTPUT);
-digitalWrite(LORA_CS, HIGH);
+    pinMode(LORA_CS, OUTPUT);
+    digitalWrite(LORA_CS, HIGH);
 #endif
 
 #if defined(LORA_RST)
-pinMode(LORA_RST, OUTPUT);
-digitalWrite(LORA_RST, HIGH);
+    pinMode(LORA_RST, OUTPUT);
+    digitalWrite(LORA_RST, HIGH);
 #endif
 
 #if defined(LORA_DIO0)
-pinMode(LORA_DIO0, INPUT);
+    pinMode(LORA_DIO0, INPUT);
 #endif
 
 #if defined(LORA_BUSY)
-pinMode(LORA_BUSY, INPUT);
+    pinMode(LORA_BUSY, INPUT);
 #endif
 
 #if defined(IR_TX_PINS)
-pinMode(4, OUTPUT);
-digitalWrite(4, LOW);
+    pinMode(4, OUTPUT);
+    digitalWrite(4, LOW);
 #endif
 
 #if defined(IR_RX_PINS)
-pinMode(5, INPUT);
+    pinMode(5, INPUT);
 #endif
 }
 
