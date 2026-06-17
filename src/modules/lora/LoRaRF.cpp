@@ -42,7 +42,11 @@ SX1262 *lora1262 = nullptr;
 volatile bool loraPacketReceived = false;
 volatile bool loraInterruptEnabled = true;
 enum class LoRaRadioVariant { SX1276, SX1262 };
+#if defined(ODG_S3_BRUCE_FULL)
+LoRaRadioVariant loraRadioVariant = LoRaRadioVariant::SX1262;
+#else
 LoRaRadioVariant loraRadioVariant = LoRaRadioVariant::SX1276;
+#endif
 
 int getLoraIrqPin() {
 #ifdef LORA_IRQ
@@ -409,9 +413,15 @@ void lorachat() {
         Serial.println("creating lora settings .json file");
         JsonDocument doc;
         File file = LittleFS.open("/lora_settings.json", "w");
+#if defined(ODG_S3_BRUCE_FULL)
+        doc["LoRa_Frequency"] = "868100000.00";
+        doc["LoRa_Name"] = "BruceTest";
+        doc["LoRa_Radio"] = "SX1262";
+#else
         doc["LoRa_Frequency"] = "434500000.00";
         doc["LoRa_Name"] = "BruceTest";
         doc["LoRa_Radio"] = "SX1276";
+#endif
         serializeJson(doc, file);
         file.close();
     }
