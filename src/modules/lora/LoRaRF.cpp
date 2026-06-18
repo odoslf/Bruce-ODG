@@ -319,7 +319,11 @@ void downpress() {
 }
 
 void selectRadioVariant(JsonDocument &doc) {
+#if defined(ODG_S3_BRUCE_FULL)
+    String stored = doc["LoRa_Radio"] | "SX1262";
+#else
     String stored = doc["LoRa_Radio"] | "SX1276";
+#endif
     if (stored.equalsIgnoreCase("SX1262")) { loraRadioVariant = LoRaRadioVariant::SX1262; }
     std::vector<Option> radioOptions = {
         {"SX1276", []() {}},
