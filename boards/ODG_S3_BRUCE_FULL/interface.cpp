@@ -134,7 +134,7 @@ void _setup_gpio() {
     }
 
     bruceConfig.colorInverted = 0;
-    bruceConfig.startupApp = "WebUI";
+    bruceConfig.startupApp = "";
 }
 
 void _post_setup_gpio() {
